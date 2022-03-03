@@ -109,7 +109,7 @@ class hydroneEnv(gym.Env):
         return low, high
 
     def _getGoalDistace(self):
-        goal_distance = round(math.hypot(self.goal_x - self.position.x, self.goal_y - self.position.y), 2)
+        goal_distance = math.sqrt((self.goal_x - self.position.x)**2 + (self.goal_y - self.position.y)**2 + (self.goal_z - self.position.z)**2)
         return goal_distance
 
     def getOdometry(self, odom):

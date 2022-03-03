@@ -36,13 +36,16 @@ class Respawn:
         self.goal_position = Pose()
         self.goal_x_list = None
         self.goal_y_list = None
+        self.goal_z_list = None
         self.len_goal_list = None
         self.index = None
         self.last_index = None
         self.init_goal_x = None
         self.init_goal_y = None
+        self.init_goal_z = None
         self.goal_position.position.x = None
         self.goal_position.position.y = None
+        self.goal_position.position.z = None
         self.modelName = 'goal'
         self.check_model = False
         self.sub_model = rospy.Subscriber('gazebo/model_states', ModelStates, self.checkModel)
@@ -77,14 +80,17 @@ class Respawn:
         self.index = 0
         self.goal_position.position.x = self.init_goal_x
         self.goal_position.position.y = self.init_goal_y
+        self.goal_position.position.z = self.init_goal_z
         self.last_index = self.index
 
     def setGoalList(self, goal_list):
         self.goal_x_list = [p[0] for p in goal_list]
         self.goal_y_list = [p[1] for p in goal_list]
+        self.goal_z_list = [p[2] for p in goal_list]
         self.len_goal_list = len(self.goal_x_list)
         self.init_goal_x = self.goal_x_list[0]
         self.init_goal_y = self.goal_y_list[0]
+        self.init_goal_z = self.goal_z_list[0]
         self.initIndex()
 
     def getPosition(self, position_check=False, delete=False):
@@ -97,7 +103,8 @@ class Respawn:
 
             self.goal_position.position.x = self.goal_x_list[self.index]
             self.goal_position.position.y = self.goal_y_list[self.index]
+            self.goal_position.position.z = self.goal_z_list[self.index]
 
         time.sleep(0.5)
         self.respawnModel()
-        return self.goal_position.position.x, self.goal_position.position.y
+        return self.goal_position.position.x, self.goal_position.position.y, self.goal_position.position.z
